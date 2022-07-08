@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "2480924097",
+    "project_id": "monitoramento-automotivo",
+    "storage_bucket": "monitoramento-automotivo.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:2480924097:android:9ce604f48c2bcd50fd7b40",
+        "android_client_info": {
+          "package_name": "com.fr3ts0n.ecu.gui.androbd"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "2480924097-i8fohqflbgr6gh6i1rpm4ib4q8s83235.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAdF8FH3P6w_cekfRYQUZP_Hi5iuua_lmc"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "2480924097-i8fohqflbgr6gh6i1rpm4ib4q8s83235.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -50,9 +50,12 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.AbsListView;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.Spinner;
 import android.widget.Toast;
+
+import androidx.annotation.NonNull;
 
 import com.fr3ts0n.androbd.plugin.Plugin;
 import com.fr3ts0n.androbd.plugin.mgr.PluginManager;
@@ -66,6 +69,11 @@ import com.fr3ts0n.pvs.ProcessVar;
 import com.fr3ts0n.pvs.PvChangeEvent;
 import com.fr3ts0n.pvs.PvChangeListener;
 import com.fr3ts0n.pvs.PvList;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 
 import java.beans.PropertyChangeEvent;
 import java.beans.PropertyChangeListener;
@@ -96,6 +104,8 @@ public class MainActivity extends PluginManager
         SharedPreferences.OnSharedPreferenceChangeListener,
         AbsListView.MultiChoiceModeListener
 {
+    private Button btnave;
+    StorageReference reference;
     /**
      * Key names for preferences
      */
@@ -510,7 +520,6 @@ public class MainActivity extends PluginManager
     {
         // instantiate superclass
         super.onCreate(savedInstanceState);
-
         requestWindowFeature(Window.FEATURE_PROGRESS);
 
         // get additional permissions
@@ -582,6 +591,96 @@ public class MainActivity extends PluginManager
 
         // set content view
         setContentView(R.layout.startup_layout);
+
+        btnave = findViewById(R.id.btn_upload);
+
+        reference= FirebaseStorage.getInstance().getReference().child("datalake-pac-obd");
+
+        btnave.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v){
+                String data= "Time [s],Vehicle Speed,Intake Air Temperature,Fuel Level Input,\n" +
+                        "    2022-07-08 05:05:32.169,121.0,82.0,48.235294342041016,\n" +
+                        "    2022-07-08 05:05:32.323,124.0,85.0,49.411766052246094,\n" +
+                        "    2022-07-08 05:05:32.477,127.0,88.0,50.588233947753906,\n" +
+                        "    2022-07-08 05:05:32.631,130.0,91.0,51.764705657958984,\n" +
+                        "    2022-07-08 05:05:32.790,133.0,94.0,52.94117736816406,\n" +
+                        "    2022-07-08 05:05:32.946,136.0,97.0,54.117645263671875,\n" +
+                        "    2022-07-08 05:05:33.105,139.0,100.0,55.29411697387695,\n" +
+                        "    2022-07-08 05:05:33.259,142.0,103.0,56.47058868408203,\n" +
+                        "    2022-07-08 05:05:33.412,145.0,106.0,57.64706039428711,\n" +
+                        "    2022-07-08 05:05:33.568,148.0,109.0,58.82352828979492,\n" +
+                        "    2022-07-08 05:05:33.723,151.0,112.0,60.0,\n" +
+                        "    2022-07-08 05:05:33.877,154.0,115.0,61.17647171020508,\n" +
+                        "    2022-07-08 05:05:34.032,157.0,118.0,62.35293960571289,\n" +
+                        "    2022-07-08 05:05:34.188,160.0,121.0,63.52941131591797,\n" +
+                        "    2022-07-08 05:05:34.343,163.0,124.0,64.70587921142578,\n" +
+                        "    2022-07-08 05:05:34.498,166.0,127.0,65.88235473632812,\n" +
+                        "    2022-07-08 05:05:34.658,169.0,130.0,67.05882263183594,\n" +
+                        "    2022-07-08 05:05:34.814,172.0,133.0,68.23529052734375,\n" +
+                        "    2022-07-08 05:05:34.972,175.0,136.0,69.4117660522461,\n" +
+                        "    2022-07-08 05:05:35.127,178.0,139.0,70.5882339477539,\n" +
+                        "    2022-07-08 05:05:35.280,181.0,142.0,71.76470947265625,\n" +
+                        "    2022-07-08 05:05:35.436,184.0,145.0,72.94117736816406,\n" +
+                        "    2022-07-08 05:05:35.589,187.0,148.0,74.11764526367188,\n" +
+                        "    2022-07-08 05:05:35.744,190.0,151.0,75.29412078857422,\n" +
+                        "    2022-07-08 05:05:35.898,193.0,154.0,76.47058868408203,\n" +
+                        "    2022-07-08 05:05:36.058,196.0,157.0,77.64705657958984,\n" +
+                        "    2022-07-08 05:05:36.213,199.0,160.0,78.82353210449219,\n" +
+                        "    2022-07-08 05:05:36.367,202.0,163.0,80.0,\n" +
+                        "    2022-07-08 05:05:36.524,205.0,166.0,81.17646789550781,\n" +
+                        "    2022-07-08 05:05:36.679,208.0,169.0,82.35294342041016,\n" +
+                        "    2022-07-08 05:05:36.834,211.0,172.0,83.52941131591797,\n" +
+                        "    2022-07-08 05:05:36.989,214.0,175.0,84.70587921142578,\n" +
+                        "    2022-07-08 05:05:37.143,217.0,178.0,85.88235473632812,\n" +
+                        "    2022-07-08 05:05:37.299,220.0,181.0,87.05882263183594,\n" +
+                        "    2022-07-08 05:05:37.457,223.0,184.0,88.23529052734375,\n" +
+                        "    2022-07-08 05:05:37.622,226.0,187.0,89.4117660522461,\n" +
+                        "    2022-07-08 05:05:37.778,229.0,190.0,90.5882339477539,\n" +
+                        "    2022-07-08 05:05:37.931,232.0,193.0,91.76470947265625,\n" +
+                        "    2022-07-08 05:05:38.089,235.0,196.0,92.94117736816406,\n" +
+                        "    2022-07-08 05:05:38.243,238.0,199.0,94.11764526367188,\n" +
+                        "    2022-07-08 05:05:38.397,241.0,202.0,95.29412078857422,\n" +
+                        "    2022-07-08 05:05:38.551,244.0,205.0,96.47058868408203,\n" +
+                        "    2022-07-08 05:05:38.710,247.0,208.0,97.64705657958984,\n" +
+                        "    2022-07-08 05:05:38.863,250.0,211.0,98.82353210449219,\n" +
+                        "    2022-07-08 05:05:39.022,253.0,214.0,100.0,\n" +
+                        "    2022-07-08 05:05:39.179,0.0,-39.0,0.7843137383460999,\n" +
+                        "    2022-07-08 05:05:39.335,3.0,-36.0,1.9607843160629272,\n" +
+                        "    2022-07-08 05:05:39.492,6.0,-33.0,3.1372549533843994,\n" +
+                        "    2022-07-08 05:05:39.647,9.0,-30.0,4.313725471496582,\n" +
+                        "    2022-07-08 05:05:39.803,12.0,-27.0,5.490196228027344,\n" +
+                        "    2022-07-08 05:05:39.958,15.0,-24.0,6.666666507720947,\n" +
+                        "    2022-07-08 05:05:40.111,18.0,-21.0,7.843137264251709,\n" +
+                        "    2022-07-08 05:05:40.266,21.0,-18.0,9.019607543945312,\n" +
+                        "    2022-07-08 05:05:40.423,24.0,-15.0,10.196078300476074,\n" +
+                        "    2022-07-08 05:05:40.579,27.0,-12.0,11.372549057006836,\n" +
+                        "    2022-07-08 05:05:40.733,30.0,-9.0,12.549019813537598,\n" +
+                        "    2022-07-08 05:05:40.891,33.0,-6.0,13.72549057006836,\n" +
+                        "    2022-07-08 05:05:41.046,36.0,-3.0,14.901960372924805,\n" +
+                        "    2022-07-08 05:05:41.204,39.0,0.0,16.078432083129883,\n" +
+                        "    2022-07-08 05:05:41.357,42.0,3.0,17.254901885986328,\n" +
+                        "    2022-07-08 05:05:41.512,45.0,6.0,18.431371688842773,\n" +
+                        "    2022-07-08 05:05:41.669,48.0,9.0,19.60784339904785,\n" +
+                        "    2022-07-08 05:05:41.835,51.0,12.0,20.784313201904297,\n" +
+                        "    2022-07-08 05:05:41.992,54.0,15.0,21.960784912109375,\n" +
+                        "    2022-07-08 05:05:42.151,57.0,18.0,23.13725471496582,\n" +
+                        "    ";
+
+                reference.child("raw_data.txt").putBytes(data.getBytes()).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        Toast.makeText(MainActivity.this, "Arquivo upado com sucesso",Toast.LENGTH_SHORT).show();
+                    }
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Toast.makeText(MainActivity.this, e.toString(),Toast.LENGTH_SHORT).show();
+                    }
+                });
+
+            }
+        });
 
         // override comm medium with USB connect intent
         if ("android.hardware.usb.action.USB_DEVICE_ATTACHED".equals(getIntent().getAction()))

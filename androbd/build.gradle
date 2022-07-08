@@ -2,10 +2,10 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 
 android {
-    compileSdkVersion 30
+    compileSdkVersion 32
     defaultConfig {
         applicationId 'com.fr3ts0n.ecu.gui.androbd'
-        minSdkVersion 17
+        minSdkVersion 19
         // SDK 25 to allow background service mechanism for plugins
         targetSdkVersion 25
         versionCode 20502
@@ -44,4 +44,11 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.github.mik3y:usb-serial-for-android:3.3.0'
     implementation 'com.github.anastr:speedviewlib:1.6.0'
+    implementation platform('com.google.firebase:firebase-bom:30.2.0')
+    implementation 'com.google.firebase:firebase-analytics'
+    implementation 'com.google.firebase:firebase-storage:20.0.1'
+    implementation 'com.google.firebase:firebase-auth:21.0.6'
+    implementation 'com.google.firebase:firebase-database:19.2.1'
 }
+
+apply plugin: 'com.google.gms.google-services'
